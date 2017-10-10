@@ -2,7 +2,7 @@ setwd("C:/Users/claude/Desktop/R folder/eclipse/workspace/rpure/src")
 
 source(file="connectionDB.R",, echo=TRUE)
 
-actions <- dbGetQuery(con, "SELECT * from stocks order by id")
+actions <- dbGetQuery(con, "SELECT * from stocks where actived order by id")
 q <- dbGetQuery(con, "SELECT distinct date from quotes where date > '2014-01-01' order by date asc")
 nom <-c("date")
 for (id in actions$id){

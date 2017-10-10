@@ -2,13 +2,16 @@ setwd("C:/Users/claude/Desktop/R folder/eclipse/workspace/rpure/src")
 
 source(file="connectionDB.R",, echo=TRUE)
 
-actions <- dbGetQuery(con, "SELECT * from stocks order by id")
+actions <- dbGetQuery(con, "SELECT id,code from stocks where actived is TRUE")
 q <- dbGetQuery(con, "SELECT distinct date from quotes where date > '2014-01-01' order by date asc")
 nom <-c("date")
-for (id in actions$id){
-	nom <- c(nom,trimws(actions$code[id]))
-	x <- dbGetQuery(con, paste(paste("SELECT close from quotes where date > '2014-01-01'and id_stock = ",id,sep=""),"order by date asc",sep=" "))
+for (i in actions$id){
+	if(!is.na(actions$code[i])){
+	print(actions$code[i])
+	nom <- c(nom,trimws(actions$code[i]))
+	x <- dbGetQuery(con, paste(paste("SELECT close from quotes where date > '2014-01-01'and id_stock = ",i,sep=""),"order by date asc",sep=" "))
 	q <- cbind(q,x)
+	}
 }
 names(q) <- nom
 v <- q[,-1] # suppression de la colonne date
